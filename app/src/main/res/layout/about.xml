@@ -6,13 +6,16 @@
     android:orientation="vertical"
     android:paddingStart="?attr/dialogPreferredPadding"
     android:paddingEnd="?attr/dialogPreferredPadding"
-    android:paddingBottom="?attr/dialogPreferredPadding">
+    android:paddingBottom="?attr/dialogPreferredPadding"
+    android:background="@color/cardview_dark_background"
+    >
 
     <TextView
         android:id="@+id/about_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+
         android:textColor="@color/design_default_color_primary_dark"
         android:textStyle="bold"
         tools:text="1.0.0" />
@@ -21,28 +24,35 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/About_ME" />
+        android:text="@string/About_ME"
+        android:textColor="#D5C8C8" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:autoLink="all"
-
         android:layout_height="wrap_content"
-        android:text="@string/about_email" />
+
+        android:autoLink="all"
+        android:text="@string/about_email"
+        android:textColor="#B6ACAC"
+        android:textColorLink="#0A1659" />
 
     <TextView
         android:id="@+id/textView4"
-        android:autoLink="all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/about_weblink" />
+        android:autoLink="all"
+        android:text="@string/about_weblink"
+        android:textColor="#B6ACAC"
+        android:textColorLink="#0A1659" />
 
     <TextView
         android:id="@+id/textView5"
-        android:autoLink="all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/facebook" />
+        android:autoLink="all"
+        android:text="@string/facebook"
+        android:textColor="#B6ACAC"
+        android:textColorLink="#0A1659" />
 
 </LinearLayout>
