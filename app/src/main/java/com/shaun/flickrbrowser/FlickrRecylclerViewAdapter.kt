@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
@@ -49,6 +50,7 @@ class FlickrRecylclerViewAdapter(private var photolist: List<Photo>) :
                 holder.title.setText("No Photo Found.\n\nTry Another Keyword")
         }
         else{
+
             val photoItem = photolist[position]
 //        Log.d(TAG,".onBindViewHolder ${photoItem.title} -> $position")
             Picasso.get().load(photoItem.image)

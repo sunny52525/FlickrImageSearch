@@ -1,5 +1,6 @@
 package com.shaun.flickrbrowser
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -11,8 +12,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.BuildConfig
 import kotlinx.android.synthetic.main.content_main.*
 
 
@@ -20,10 +25,8 @@ class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
     GetFlickerData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
     private val TAG = "MainActivity"
     private val flickerRecylclerViewAdapter = FlickrRecylclerViewAdapter(ArrayList())
+    private var aboutDialog: AlertDialog?= null
 
-    val aboutmeListener=View.OnClickListener {
-
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +34,11 @@ class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         activateToolbar(false)
+
+        val fab=findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener{
+            showAboutDialog()
+        }
 
 
         if (isNetworkAvailable(this))
@@ -119,15 +127,18 @@ class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
 //    companion object{
 //        private  val TAG="MainActivity"
 //    }
-
+var count=0
     override fun onDataAvailable(data: List<Photo>) {
         Log.d(TAG, "onDataAvailable Called")
-        if(data.size==0)
+        if(data.size==0 ){
             Toast.makeText(this,"No result Found",Toast.LENGTH_SHORT).show()
-        else{
-        Toast.makeText(this@MainActivity, "Download Complete", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this@MainActivity, "If Results are not appropriate then its not my fault, its Flickr fault", Toast.LENGTH_SHORT).show()
         }
+        else{
+            if(count==0){
+        Toast.makeText(this@MainActivity, "Download Complete", Toast.LENGTH_SHORT).show()}
+            else
+                count++
+         }
         flickerRecylclerViewAdapter.loadNewData(data)
         Log.d(TAG, "onDataAvailable ends")
     }
@@ -171,6 +182,8 @@ class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
         val queryresult=sharedpref.getString(FLICKR_QUERY,"")
         if(queryresult!!.isNotEmpty())
         {
+            Toast.makeText(this, "If Results are not appropriate then its not my fault, its Flickr fault", Toast.LENGTH_SHORT).show()
+count=0
             val url = createUri(
                 "https://www.flickr.com/services/feeds/photos_public.gne",
                 queryresult,
@@ -181,8 +194,22 @@ class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
             getRawData.execute(url)
 
 
+
         }
 
+    }
+    @SuppressLint("InflateParams")
+    private fun showAboutDialog(){
+        val messgView = layoutInflater.inflate(R.layout.about,null,false)
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle(R.string.app_name)
+        builder.setIcon(R.mipmap.ic_launcher)
+        aboutDialog=builder.setView(messgView).create()
+        aboutDialog?.setCanceledOnTouchOutside(true)
+        val aboutVersion =messgView.findViewById(R.id.about_version) as TextView
+        aboutVersion.text = BuildConfig.VERSION_NAME
+        aboutDialog?.show()
     }
 }
 
