@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : BaseActivity(), GetRawData.OndownloadComplete,
     GetFlickerData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
     private val TAG = "MainActivity"
-    private val flickerRecylclerViewAdapter = FlickrRecylclerViewAdapter(ArrayList())
+        private val flickerRecylclerViewAdapter = FlickrRecylclerViewAdapter(ArrayList())
     private var aboutDialog: AlertDialog?= null
 
 
@@ -131,6 +132,8 @@ var count=0
     override fun onDataAvailable(data: List<Photo>) {
         Log.d(TAG, "onDataAvailable Called")
         if(data.size==0 ){
+
+            progress.visibility=View.GONE
             Toast.makeText(this,"No result Found",Toast.LENGTH_SHORT).show()
         }
         else{
@@ -178,6 +181,7 @@ var count=0
 
     override fun onResume() {
         super.onResume()
+
         val sharedpref=PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val queryresult=sharedpref.getString(FLICKR_QUERY,"")
         if(queryresult!!.isNotEmpty())
@@ -195,7 +199,8 @@ count=0
 
 
 
-        }
+        }else
+            progress.visibility=View.GONE
 
     }
     @SuppressLint("InflateParams")
